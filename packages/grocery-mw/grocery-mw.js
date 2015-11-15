@@ -6,7 +6,7 @@ var npm = {
 var rootDirectory = npm.path.normalize(process.cwd().split('.meteor')[0]);
 
 /**
- * Evaluates a string of R code via Rserve on the local machine.
+ * Evaluates a string of R code.e.
  * @param {string} cmd - The R code to execute.
  * @return The result of evaluating the code.
  * @throws Will throw if the Rserve server doesn't respond or if the R code throws while executing.
@@ -60,6 +60,15 @@ grocery_mw = {
     return r_eval(npm.util.format('mw.getItemsFromDepartment("%s");', dept));
   },
 
+  /**
+  * Creates a heatmap for a date specified as three integers or as a formatted string.
+  * @param {int} y - The year of the date.
+  * @param {int} m - The month of the date.
+  * @param {int} d - The day of the date.
+  * @param {string} date - Uses format "%d-%d-%d" as only parameter as the date.
+  * @return {string} - Absolute path to the generated image.
+  * @throws Will throw if the server doesn't respond.
+  */
   heatmapForDate: function(y, m, d) {
     var date;
     if(m === undefined && d === undefined) {
@@ -67,7 +76,8 @@ grocery_mw = {
     } else {
       date = y + '-' + m + '-' + d;
     }
-    return r_eval(npm.util.format('mw.heatmapForDate(%s);', date));
+    var relative_path = r_eval(npm.util.format('mw.heatmapForDate(%s);', date));
+    return npm.path.resolve(rootDirectory, "private", "img", relative_path);
   }
 
 };
