@@ -58,13 +58,23 @@ grocery_mw = {
    */
   getItemsFromDepartment: function(dept) {
     return r_eval(npm.util.format('mw.getItemsFromDepartment("%s");', dept));
+  },
+
+  heatmapForDate: function(y, m, d) {
+    var date;
+    if(m === undefined && d === undefined) {
+      date = y.toString();
+    } else {
+      date = y + '-' + m + '-' + d;
+    }
+    return r_eval(npm.util.format('mw.heatmapForDate(%s);', date));
   }
+
 };
 
 // Registers wrapped versions of the functions in grocery_mw as Meteor methods.
 Meteor.methods({
   getDepartments: wrap(grocery_mw.getDepartments, grocery_mw),
-  getItemsFromDepartment: wrap(grocery_mw.getItemsFromDepartment, grocery_mw)
+  getItemsFromDepartment: wrap(grocery_mw.getItemsFromDepartment, grocery_mw),
+  heatmapForDate: wrap(grocery_mw.heatmapForDate, grocery_mw)
 });
-
-// Starts Rserve server.
