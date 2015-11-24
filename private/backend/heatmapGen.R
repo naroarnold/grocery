@@ -15,6 +15,9 @@ heatmapGen <- function(heattable) {
   filename <- file.path(mw.directory, "FloorPlan.csv")
   floorplan <- read.csv(file=filename, stringsAsFactors=FALSE)
   
+  floorplan <- floorplan[rev(rownames(floorplan)),]
+  rownames(floorplan) <- 1:length(rownames(floorplan))
+  
   
   ##map department weight to department location in store
   floorweight <- as.matrix(as.data.frame(lapply(floorplan, FUN=function(x,y) {
